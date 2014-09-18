@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+PANDOC_OPTS="--csl=bracketed --atx-headers --no-wrap -t markdown"
+
+if [[ -z $TM_FILEPATH ]]
+  then exit_show_tool_tip "Please save this file first";
+fi
+
+# Save the document to a temporary file, since we will need it a few times
+TMPFILE=`mktemp /tmp/markdown.tmbundle.XXXXXX` || exit 1
+cat &gt;&gt; "$TMPFILE"
+
+# Get metadata in the document header (pandoc or Jekyll) as a string of -VKEY:VALUE flags
+templatevars=$(ruby "$TM_BUNDLE_SUPPORT/bin/pandoc_template_vars.rb" &lt;"$TMPFILE")
+
+# Normalize the document header to a pandoc title block and convert to LaTeX
+ruby "$TM_BUNDLE_SUPPORT/bin/normalize_front_matter.rb" &lt;"$TMPFILE" |
+pandoc -Ss --bibliography="$TM_PANDOC_BIB" $templatevars $PANDOC_OPTS - 2&gt;/dev/null |
+ruby "$TM_BUNDLE_SUPPORT/bin/citations_to_footnotes.rb" |
+ruby "$TM_BUNDLE_SUPPORT/bin/normalize_front_matter.rb" "$TMPFILE"
+RC=$?
+
+rm "$TMPFILE"
+
+exit $RC</string>
+	<key>input</key>
+	<string>document</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>^~@f</string>
+	<key>name</key>
+	<string>Convert Citations to Footnotes (pandoc)</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>text</string>
+	<key>outputLocation</key>
+	<string>replaceDocument</string>
+	<key>scope</key>
+	<string>text.html.markdown</string>
+	<key>uuid</key>
+	<string>44238B8C-0E71-4ABF-BA4C-2C5BA649E737</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

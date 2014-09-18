@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+if [[ -z $TM_FILEPATH ]]
+  then exit_show_tool_tip "Please save this file first";
+fi
+
+outfile=${TM_FILEPATH%.*}
+
+# Save the document to a temporary file, since we will need it a few times
+TMPFILE=`mktemp /tmp/markdown.tmbundle.XXXXXX` || exit 1
+cat &gt;&gt; "$TMPFILE"
+
+# Get metadata in the document header (pandoc or Jekyll) as a string of -VKEY:VALUE flags
+templatevars=$(ruby "$TM_BUNDLE_SUPPORT/bin/pandoc_template_vars.rb" &lt;"$TMPFILE")
+
+# Normalize the document header to a pandoc title block and convert to LaTeX
+ruby "$TM_BUNDLE_SUPPORT/bin/normalize_front_matter.rb" &lt;"$TMPFILE" |
+pandoc -Ss --bibliography="$TM_PANDOC_BIB" --natbib $templatevars -o "$outfile.tex" - 2&gt;&amp;1 |
+grep -v 'process_defaultadd' | cat # squelch these weird errors from citeproc-hs
+RC=$?
+
+rm "$TMPFILE"
+
+sleep 1
+[[ -f "$outfile.tex" ]] &amp;&amp; mate -a "$outfile.tex"
+
+exit $RC</string>
+	<key>input</key>
+	<string>document</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>^~@l</string>
+	<key>name</key>
+	<string>Convert To LaTeX (pandoc)</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>text</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>text.html.markdown</string>
+	<key>uuid</key>
+	<string>30E16E6F-CEC9-4E49-AE8E-0D532EDDC29E</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+BASE_HREF="file://${TM_FILEPATH// /%20}"
+
+# Convert to html then make one of the html tags above caret 
+# into a link that we scroll down to
+# The reason grep and pcregrep are in this pipeline are to suppress overzealous
+# warnings that pandoc and hs-bibutils like to throw into the stream
+ruby "$TM_BUNDLE_SUPPORT/bin/normalize_front_matter.rb" |
+pandoc -Ss --mathjax --bibliography="$TM_PANDOC_BIB" --template pandoc-md-preview -f markdown -t html -Vhtml5=true "-Vbase_href=$BASE_HREF" 2&gt;&amp;1 |
+grep -v 'process_defaultadd' | pcregrep -Mv '^hs-bibutils:.*(\n\t.*)*'</string>
+	<key>input</key>
+	<string>document</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>^~@p</string>
+	<key>name</key>
+	<string>Preview (pandoc)</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>text.html.markdown</string>
+	<key>uuid</key>
+	<string>107F8AD3-3613-4D17-9B30-CCA3FA5F39FB</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>
