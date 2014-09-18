@@ -6,6 +6,8 @@ Markdown settings for use with TextMate 2.
 
 Note this is a delta bundle, based off of [the original](https://github.com/textmate/markdown.tmbundle).  Why not release a whole bundle?  I'd rather just add my commands and changes to what's current.
 
+I prefer [Pandoc](http://johnmacfarlane.net/pandoc/) as my Markdown engine and the bundle contains commands for specifically using Pandoc's features.  However, Pandoc has some features like [title blocks](http://johnmacfarlane.net/pandoc/README.html#extension-pandoc_title_block) that clash with Jekyll's way of doing things, and this bundle also contains some code for automagically converting between the two.  For example, you can pipe a Markdown file meant for Jekyll through Pandoc, automatically converting the YAML front matter into a Pandoc title block.
+
 ## Usage
 
 1. Close TextMate 2.
