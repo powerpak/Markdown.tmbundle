@@ -28,4 +28,4 @@ Finally, you'll need to configure at least two variables within Textmate.  Go to
 1. Close TextMate 2.
 2. Checkout into `~/Library/Application Support/Avian/Bundles`.
 3. Double click on the Markdown.tmbundle that was made to open it in Textmate 2.
-4. Textmate will complain that the bundle is in delta format.  No matter; it will still work.  You can verify this by going to Bundles > Edit Bundles... and checking that the Markdown bundle has `Convert To LaTeX (pandoc)` and other various Menu Actions.
+4. Textmate will complain that the bundle is in delta format.  No matter; it will still work.  You can verify this by going to Bundles > Edit Bundles... and checking that the Markdown bundle has `Convert To LaTeX (pandoc)` and other various new Menu Actions.
