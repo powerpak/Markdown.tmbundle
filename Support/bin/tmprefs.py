@@ -71,6 +71,7 @@ class Preferences(object):
         plDict = {}
         if haspyobjc:
             plDict = NSDictionary.dictionaryWithContentsOfFile_(os.environ["HOME"]+"/Library/Preferences/" + TM_PREFERENCE_FILE)
+            if plDict is None: plDict = {}
         else:   # TODO remove all this once everyone is on leopard
             os.system("plutil -convert xml1 \"$HOME/Library/Preferences/"+TM_PREFERENCE_FILE+"\" -o /tmp/tmltxprefs1.plist")
             null_tt = "".join([chr(i) for i in range(256)])

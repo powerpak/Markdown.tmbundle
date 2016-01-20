@@ -4,8 +4,54 @@
 <dict>
 	<key>changed</key>
 	<dict>
-		<key>isDisabled</key>
-		<false/>
+		<key>repository.block.patterns</key>
+		<array>
+			<dict>
+				<key>include</key>
+				<string>#separator</string>
+			</dict>
+			<dict>
+				<key>include</key>
+				<string>#heading</string>
+			</dict>
+			<dict>
+				<key>include</key>
+				<string>#blockquote</string>
+			</dict>
+			<dict>
+				<key>include</key>
+				<string>#lists</string>
+			</dict>
+			<dict>
+				<key>include</key>
+				<string>#raw_block</string>
+			</dict>
+			<dict>
+				<key>include</key>
+				<string>#fenced_block</string>
+			</dict>
+			<dict>
+				<key>include</key>
+				<string>#link-def</string>
+			</dict>
+			<dict>
+				<key>include</key>
+				<string>#html</string>
+			</dict>
+			<dict>
+				<key>include</key>
+				<string>#paragraph</string>
+			</dict>
+		</array>
+		<key>repository.block.repository.fenced_block</key>
+		<dict>
+			<key>begin</key>
+			<string>(^|\G)```</string>
+			<key>end</key>
+			<string>(^|\G)```</string>
+			<key>name</key>
+			<string>markup.raw.block.markdown</string>
+		</dict>
 		<key>repository.inline.repository.cite-ref</key>
 		<dict>
 			<key>captures</key>
